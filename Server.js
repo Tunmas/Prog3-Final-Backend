@@ -37,15 +37,21 @@ mongoose.connection.on('error', (err) => {
 const usuarioRutas = require('./routes/Usuario_rutas');
 app.use('/api/usuarios', usuarioRutas);
 
-// Verificación cuando se realiza una solicitud al backend
+// Middleware para la verificación de solicitudes
 app.use((req, res, next) => {
   console.log(`Solicitud recibida: ${req.method} ${req.url}`);
   next();
 });
 
-// Manejo de errores para rutas no encontradas
-app.use((req, res) => {
+// Manejo de rutas no encontradas
+app.use((req, res, next) => {
   res.status(404).json({ mensaje: 'Ruta no encontrada' });
+});
+
+// Manejo global de errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ mensaje: 'Ocurrió un error en el servidor', error: err.message });
 });
 
 // Iniciar el servidor
