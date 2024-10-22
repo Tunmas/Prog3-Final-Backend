@@ -33,11 +33,6 @@ mongoose.connection.on('error', (err) => {
   console.error('Error en la conexión de Mongoose:', err);
 });
 
-// Ruta básica para verificar el deploy
-app.get('/', (req, res) => {
-  res.send('Deploy exitoso!');
-});
-
 // Importar rutas
 const usuarioRutas = require('./routes/Usuario_rutas');
 app.use('/api/usuarios', usuarioRutas);
@@ -49,7 +44,7 @@ app.use((req, res, next) => {
 });
 
 // Manejo de rutas no encontradas
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).json({ mensaje: 'Ruta no encontrada' });
 });
 
