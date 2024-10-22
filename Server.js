@@ -6,8 +6,14 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors()); 
+// Configuración de CORS personalizada
+const corsOptions = {
+  origin: process.env.CLIENT_URL || 'https://tu-frontend.vercel.app', // Reemplaza con tu frontend
+  credentials: true, // Habilita las cookies de sitios cruzados
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions)); 
 app.use(express.json()); 
 
 // Conectar a la base de datos de usuarios en MongoDB
@@ -29,12 +35,17 @@ mongoose.connection.on('error', (err) => {
 
 // Importar rutas
 const usuarioRutas = require('./routes/Usuario_rutas');
-app.use('/api/usuarios', usuarioRutas); 
+app.use('/api/usuarios', usuarioRutas);
 
 // Verificación cuando se realiza una solicitud al backend
 app.use((req, res, next) => {
   console.log(`Solicitud recibida: ${req.method} ${req.url}`);
   next();
+});
+
+// Manejo de errores para rutas no encontradas
+app.use((req, res) => {
+  res.status(404).json({ mensaje: 'Ruta no encontrada' });
 });
 
 // Iniciar el servidor
