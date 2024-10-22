@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 5000;
 
 // Configuración de CORS personalizada
 const corsOptions = {
-  origin: process.env.CLIENT_URL || 'https://tu-frontend.vercel.app', // Reemplaza con tu frontend
+  origin: process.env.CLIENT_URL || 'https://prog3-final.vercel.app/',
   credentials: true, // Habilita las cookies de sitios cruzados
   optionsSuccessStatus: 200
 };
